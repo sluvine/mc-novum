@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.EntityEffect;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -97,6 +96,7 @@ public class Novum extends JavaPlugin {
 			else {
 				SendPlayerMessage("Main hand item contains the following enchantments:", player);
 				for (java.util.Map.Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
+					//SendPlayerMessage("TESTONLY Enchant: " + enchant.toString() + " , .getKey(): " + enchant.getKey().toString() + " , .getKey().getKey(): " + enchant.getKey().getKey().toString(), player);
 					SendPlayerMessage("Type: " + enchant.getKey().getKey().getKey() + " | Level: " + enchant.getValue().toString(), player);
 					totalEnchantLevel += enchant.getValue();
 				}
@@ -188,7 +188,7 @@ public class Novum extends JavaPlugin {
 						// apply changes to book and put book in chest
 						newBook.setItemMeta(newBookMeta);
 						chestContents.addItem(newBook);
-						player.playEffect(EntityEffect.WITCH_MAGIC);
+						//player.playEffect(EntityEffect.WITCH_MAGIC); broken as of 1.21.4
 						player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f);
 						SendPlayerColorMessage("The ritual succeeds, and the power of the item transferred to the book in the chest.", ChatColor.DARK_PURPLE, player);
 					}
@@ -243,13 +243,13 @@ public class Novum extends JavaPlugin {
 								player.playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1f, 1f);
 							}
 							else {
-								chestContents.clear();
-								player.setLevel(player.getLevel() - 15);
-								player.playEffect(EntityEffect.WITCH_MAGIC);
-								player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f);
 								repairMeta.setRepairCost(resetRepairLevel);
 								itemInMainHand.setItemMeta(itemInMainHandMeta);
 								SendPlayerColorMessage("The ritual succeeds, and the power of the item is renewed.", ChatColor.DARK_PURPLE, player);
+								chestContents.clear();
+								player.setLevel(player.getLevel() - 15);
+								//player.playEffect(EntityEffect.WITCH_MAGIC); maybe never worked - broken as of 1.21.4
+								player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f);
 							}
 						}
 						else {
@@ -320,7 +320,7 @@ public class Novum extends JavaPlugin {
 						{
 							String convertedArg = cmdArgs[0].toUpperCase();
 							ArrayList<RequiredSacrifice> reqs = new ArrayList<RequiredSacrifice>();
-							int level = 0;
+							int level = 1;
 							boolean foundMatchingSacrificeConfig = false;
 							
 							switch (convertedArg)
